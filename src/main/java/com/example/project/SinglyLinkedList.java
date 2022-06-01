@@ -104,23 +104,26 @@ public class SinglyLinkedList<T> {
     // Elimina aquellos nodos de la lista que esten duplicados
     public void deleteDuplicates() {
         //Add auxiliary arrayList
+        //Forma sin compareTo
         List<T> set = new ArrayList<T>();
         //Si el tamaño es 0 o 1 no hay nada que hacer
         if(size() == 0 || size() == 1) {
             return;
         }else {
-            Node<T> temp1 = first;
-            Node<T> temp2 = first;
-            while(temp1 != null) {
-                // Cast value in String for valid compareTo method
-                if(set.contains(temp1.getValue())) {
-                    temp2.setNext(temp1.getNext());
+            // El nodo actual
+            Node<T> temp = first;
+            // El nodo anterior (NECESARIO)
+            Node<T> prev = first;
+            while(temp != null) {
+                
+                if(set.contains(temp.getValue())) {
+                    prev.setNext(temp.getNext());
                     size--;
                 }else {
-                    set.add(temp1.getValue());
-                    temp2 = temp1;
+                    set.add(temp.getValue());
+                    prev = temp;
                 }
-                temp1 = temp1.getNext();
+                temp = temp.getNext();
             }
         }
     }
@@ -133,7 +136,7 @@ public class SinglyLinkedList<T> {
             if(position == 0) {
                 addFirst(data);
                 return;
-            }else if(position == size()) {
+            }else if(position == size()+1) {
                 addLast(data);
                 return;
             }
@@ -142,6 +145,8 @@ public class SinglyLinkedList<T> {
                     Node<T> newNode = new Node<T>(data, prev.getNext());
                     prev.setNext(newNode);
                     size++;
+                    //Obligatorio para evitar errores de compilación
+                    return;
                 }
                 prev = temp;
                 temp = temp.getNext();
@@ -218,7 +223,7 @@ public class SinglyLinkedList<T> {
 
         System.out.println(list);
 
-        list.insertNth('c', 5);
+        list.insertNth('c', 2);
 
         System.out.println(list);
     }
