@@ -1,5 +1,8 @@
 package com.example.project;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SinglyLinkedList<T> {
     private Node<T> first; // Primero nodo de la lista
     private int size; // Tamano de la lista
@@ -100,17 +103,84 @@ public class SinglyLinkedList<T> {
 
     // Elimina aquellos nodos de la lista que esten duplicados
     public void deleteDuplicates() {
-
+        //Add auxiliary arrayList
+        List<T> set = new ArrayList<T>();
+        //Si el tamaño es 0 o 1 no hay nada que hacer
+        if(size() == 0 || size() == 1) {
+            return;
+        }else {
+            Node<T> temp1 = first;
+            Node<T> temp2 = first;
+            while(temp1 != null) {
+                // Cast value in String for valid compareTo method
+                if(set.contains(temp1.getValue())) {
+                    temp2.setNext(temp1.getNext());
+                    size--;
+                }else {
+                    set.add(temp1.getValue());
+                    temp2 = temp1;
+                }
+                temp1 = temp1.getNext();
+            }
+        }
     }
 
     // Inserta un nuevo nodo en una posicion especifica de la lista
     public void insertNth(T data, int position) {
+        if(verifyPosition(position, 0, size())) {
+            Node<T> temp = first;
+            Node<T> prev = first;
+            if(position == 0) {
+                addFirst(data);
+                return;
+            }else if(position == size()) {
+                addLast(data);
+                return;
+            }
+            for(int i=0; i<size();i++) {
+                if(position == i){
+                    Node<T> newNode = new Node<T>(data, prev.getNext());
+                    prev.setNext(newNode);
+                    size++;
+                }
+                prev = temp;
+                temp = temp.getNext();
+            }
+        }else {
+            System.out.println("\"Fuera de rango.\"");
+        }
+    }
 
+    public boolean verifyPosition(int position, int first, int last) {
+        if(position>=first && position<=last) {
+            return true;
+        }
+        return false;
     }
 
     // Elimina el nodo de una posicion especifica de la lista
     public void deleteNth(int position) {
-
+        if(verifyPosition(position, 0, size())) {
+            Node<T> temp = first;
+            Node<T> prev = first;
+            if(position == 0 ) {
+                removeFirst();
+                return;
+            }else if(position == size()-1) {
+                removeLast();
+                return;
+            }
+            for(int i=0; i<size();i++) {
+                if(position == i){
+                    prev.setNext(temp.getNext());
+                    size--;
+                }
+                prev = temp;
+                temp = temp.getNext();
+            }
+        } else {
+            System.out.println("\"Fuera de rango.\"");
+        }
     }
 
     public static void main(final String[] args) {
@@ -148,7 +218,7 @@ public class SinglyLinkedList<T> {
 
         System.out.println(list);
 
-        list.insertNth('c', 2);
+        list.insertNth('c', 5);
 
         System.out.println(list);
     }
