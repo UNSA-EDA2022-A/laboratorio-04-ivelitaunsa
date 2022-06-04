@@ -33,7 +33,6 @@ public class TestExercise2 {
     list.addLast('d');
 
     list.insertNth('c', 4);
-
     String result = list.toString();
     String expected = "{a,b,d,c}";
 

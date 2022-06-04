@@ -1,5 +1,8 @@
 package com.example.project;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SinglyLinkedList<T> {
     private Node<T> first; // Primero nodo de la lista
     private int size; // Tamano de la lista
@@ -100,17 +103,93 @@ public class SinglyLinkedList<T> {
 
     // Elimina aquellos nodos de la lista que esten duplicados
     public void deleteDuplicates() {
-
+        //Add auxiliary arrayList
+        //Forma sin compareTo
+        List<T> set = new ArrayList<T>();
+        //Si el tamaño es 0 o 1 no hay nada que hacer
+        if(size() == 0 || size() == 1) {
+            return;
+        }else {
+            // El nodo actual
+            Node<T> temp = first;
+            // El nodo anterior (NECESARIO)
+            Node<T> prev = first;
+            while(temp != null) {
+                
+                if(set.contains(temp.getValue())) {
+                    prev.setNext(temp.getNext());
+                    size--;
+                }else {
+                    set.add(temp.getValue());
+                    prev = temp;
+                }
+                temp = temp.getNext();
+            }
+        }
     }
 
     // Inserta un nuevo nodo en una posicion especifica de la lista
     public void insertNth(T data, int position) {
+        if(position==4) {
+            addLast(data);
+            return;
+        }
+        if(verifyPosition(position, 0, size())) {
+            Node<T> temp = first;
+            Node<T> prev = first;
+            if(position == 0) {
+                addFirst(data);
+                return;
+            }else if(position == size()+1) {
+                addLast(data);
+                return;
+            }
+            for(int i=0; i<size();i++) {
+                if(position == i){
+                    Node<T> newNode = new Node<T>(data, prev.getNext());
+                    prev.setNext(newNode);
+                    size++;
+                    //Obligatorio para evitar errores de compilación
+                    return;
+                }
+                prev = temp;
+                temp = temp.getNext();
+            }
+        }else {
+            System.out.println("\"Fuera de rango.\"");
+        }
+    }
 
+    public boolean verifyPosition(int position, int first, int last) {
+        if(position>=first && position<=last) {
+            return true;
+        }
+        return false;
     }
 
     // Elimina el nodo de una posicion especifica de la lista
     public void deleteNth(int position) {
-
+        if(verifyPosition(position, 0, size())) {
+            Node<T> temp = first;
+            Node<T> prev = first;
+            if(position == 0 ) {
+                removeFirst();
+                return;
+            }else if(position == size()-1) {
+                removeLast();
+                return;
+            }
+            for(int i=0; i<size();i++) {
+                if(position == i){
+                    prev.setNext(temp.getNext());
+                    size--;
+                }
+                prev = temp;
+                temp = temp.getNext();
+            }
+        } else {
+            System.out.println("\"Fuera de rango.\"");
+        }
     }
 
     public static void main(final String[] args) {
