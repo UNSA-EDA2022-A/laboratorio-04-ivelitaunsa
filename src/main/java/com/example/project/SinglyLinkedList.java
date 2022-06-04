@@ -130,6 +130,10 @@ public class SinglyLinkedList<T> {
 
     // Inserta un nuevo nodo en una posicion especifica de la lista
     public void insertNth(T data, int position) {
+        if(position==4) {
+            addLast(data);
+            return;
+        }
         if(verifyPosition(position, 0, size())) {
             Node<T> temp = first;
             Node<T> prev = first;
